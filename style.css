@@ -984,12 +984,14 @@ html[dir="rtl"] .mini-bar {
   position: relative;
   height: 600vh;
   background: #000;
+  z-index: 4;
 }
 .lt-track {
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
+  isolation: isolate;
 }
 .lt-stage {
   position: absolute;
@@ -1015,15 +1017,17 @@ html[dir="rtl"] .mini-bar {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: saturate(1.1) contrast(1.05);
 }
 .lt-tint {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.55) 75%, rgba(0,0,0,0.85) 100%),
-    radial-gradient(ellipse at 30% 70%, rgba(255, 32, 110, 0.15) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 20%, rgba(0, 196, 255, 0.10) 0%, transparent 60%);
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,0) 0%,
+    rgba(0,0,0,0) 45%,
+    rgba(0,0,0,0.55) 88%,
+    rgba(0,0,0,0.9) 100%
+  );
   pointer-events: none;
 }
 .lt-caption {
