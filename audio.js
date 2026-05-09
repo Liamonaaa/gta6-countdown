@@ -1,14 +1,18 @@
-// YouTube IFrame API: bg video + theme song + trailer audio with cycle toggle
+// Three sources, each with its own background video and audio.
+// vibes    -> bg = 06YQ1cHfIKQ, audio = same iframe
+// trailer1 -> bg = QdBZY2fkU-0, audio = same iframe
+// trailer2 -> bg = VQRLujxTm3c (muted), audio = hH2gvfKZbL0 (songPlayer)
 
 const VOL_KEY = "gta6-vol";
 const SRC_KEY = "gta6-src";
 
-const SOURCES = ["video", "song", "trailer"];
-const PLAYER_IDS = { video: "bgPlayer", song: "songPlayer", trailer: "trailerPlayer" };
-const LABELS = { video: "VIBES", song: "THEME", trailer: "TRAILER 1" };
-const DEFAULT_BG_ID = "06YQ1cHfIKQ";
-const BG_FOR_SOURCE = { video: DEFAULT_BG_ID, song: "VQRLujxTm3c", trailer: DEFAULT_BG_ID };
-let currentBgId = DEFAULT_BG_ID;
+const SOURCES = ["vibes", "trailer1", "trailer2"];
+const LABELS = { vibes: "VIBES", trailer1: "TRAILER 1", trailer2: "TRAILER 2" };
+const BG_VIDEO = {
+  vibes: "06YQ1cHfIKQ",
+  trailer1: "QdBZY2fkU-0",
+  trailer2: "VQRLujxTm3c"
+};
 
 const panel = document.getElementById("audioPanel");
 const muteBtn = document.getElementById("apMute");
@@ -16,11 +20,14 @@ const volSlider = document.getElementById("apVolume");
 const toggleBtn = document.getElementById("apToggle");
 const labelEl = document.getElementById("apLabel");
 
-const players = {};
-const ready = {};
+let bgPlayer = null;
+let songPlayer = null;
+let bgReady = false;
+let songReady = false;
+let currentBgId = "06YQ1cHfIKQ";
 
-let active = localStorage.getItem(SRC_KEY) || "video";
-if (!SOURCES.includes(active)) active = "video";
+let active = localStorage.getItem(SRC_KEY) || "vibes";
+if (!SOURCES.includes(active)) active = "vibes";
 let volume = parseInt(localStorage.getItem(VOL_KEY) ?? "55", 10);
 let unmuted = false;
 
@@ -42,59 +49,87 @@ window.onYouTubeIframeAPIReady = initPlayers;
 
 function initPlayers() {
   if (!window.YT || !window.YT.Player) return;
-  SOURCES.forEach(src => {
-    const id = PLAYER_IDS[src];
-    if (players[src] || !document.getElementById(id)) return;
-    players[src] = new YT.Player(id, {
+
+  if (!bgPlayer && document.getElementById("bgPlayer")) {
+    bgPlayer = new YT.Player("bgPlayer", {
       events: {
         onReady: () => {
-          ready[src] = true;
+          bgReady = true;
           try {
-            players[src].setVolume(volume);
-            players[src].mute();
-            players[src].playVideo();
+            bgPlayer.setVolume(volume);
+            bgPlayer.mute();
+            bgPlayer.playVideo();
+          } catch {}
+          syncBgVideo(true);
+          applyAudioState();
+        },
+        onStateChange: e => {
+          if (e.data === YT.PlayerState.ENDED) {
+            try { bgPlayer.playVideo(); } catch {}
+          }
+        }
+      }
+    });
+  }
+
+  if (!songPlayer && document.getElementById("songPlayer")) {
+    songPlayer = new YT.Player("songPlayer", {
+      events: {
+        onReady: () => {
+          songReady = true;
+          try {
+            songPlayer.setVolume(volume);
+            songPlayer.mute();
+            songPlayer.playVideo();
           } catch {}
           applyAudioState();
         },
         onStateChange: e => {
           if (e.data === YT.PlayerState.ENDED) {
-            try { players[src].playVideo(); } catch {}
+            try { songPlayer.playVideo(); } catch {}
           }
         }
       }
     });
-  });
+  }
+}
+
+function syncBgVideo(force) {
+  const desired = BG_VIDEO[active];
+  if (!force && desired === currentBgId) return;
+  currentBgId = desired;
+  if (!bgPlayer || !bgReady) return;
+  try {
+    bgPlayer.loadVideoById(desired);
+  } catch {}
 }
 
 function applyAudioState() {
-  SOURCES.forEach(src => {
-    const p = players[src];
-    if (!p || !ready[src]) return;
+  syncBgVideo(false);
+
+  // bgPlayer audio: only when active is vibes or trailer1
+  if (bgPlayer && bgReady) {
     try {
-      p.setVolume(volume);
-      if (unmuted && active === src) p.unMute();
-      else p.mute();
+      bgPlayer.setVolume(volume);
+      if (unmuted && (active === "vibes" || active === "trailer1")) bgPlayer.unMute();
+      else bgPlayer.mute();
     } catch {}
-  });
+  }
+
+  // songPlayer audio: only when active is trailer2
+  if (songPlayer && songReady) {
+    try {
+      songPlayer.setVolume(volume);
+      if (unmuted && active === "trailer2") songPlayer.unMute();
+      else songPlayer.mute();
+    } catch {}
+  }
+
   if (panel) {
     panel.dataset.muted = unmuted ? "false" : "true";
     panel.dataset.src = active;
   }
   if (labelEl) labelEl.textContent = LABELS[active];
-  syncBgVideo();
-}
-
-function syncBgVideo() {
-  const desired = BG_FOR_SOURCE[active] || DEFAULT_BG_ID;
-  if (desired === currentBgId) return;
-  const p = players.video;
-  if (!p || !ready.video) { currentBgId = desired; return; }
-  try {
-    p.loadVideoById(desired);
-    currentBgId = desired;
-    if (active === "video" && unmuted) p.unMute();
-    else p.mute();
-  } catch {}
 }
 
 muteBtn?.addEventListener("click", () => {
@@ -105,11 +140,8 @@ muteBtn?.addEventListener("click", () => {
 volSlider?.addEventListener("input", () => {
   volume = parseInt(volSlider.value, 10);
   localStorage.setItem(VOL_KEY, String(volume));
-  SOURCES.forEach(src => {
-    if (players[src] && ready[src]) {
-      try { players[src].setVolume(volume); } catch {}
-    }
-  });
+  if (bgPlayer && bgReady) { try { bgPlayer.setVolume(volume); } catch {} }
+  if (songPlayer && songReady) { try { songPlayer.setVolume(volume); } catch {} }
   if (volume === 0 && unmuted) { unmuted = false; applyAudioState(); }
 });
 

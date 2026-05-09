@@ -163,20 +163,20 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 0 16px rgba(255, 210, 123, 0.45);
 }
 .ap-toggle svg { width: 16px; height: 16px; }
-.ap-toggle .ic-music,
-.ap-toggle .ic-trailer { display: none; }
-.audio-panel[data-src="song"] .ap-toggle .ic-video,
-.audio-panel[data-src="song"] .ap-toggle .ic-trailer { display: none; }
-.audio-panel[data-src="song"] .ap-toggle .ic-music { display: block; }
-.audio-panel[data-src="trailer"] .ap-toggle .ic-video,
-.audio-panel[data-src="trailer"] .ap-toggle .ic-music { display: none; }
-.audio-panel[data-src="trailer"] .ap-toggle .ic-trailer { display: block; }
-.audio-panel[data-src="song"] .ap-toggle {
+.ap-toggle .ic-trailer1,
+.ap-toggle .ic-trailer2 { display: none; }
+.audio-panel[data-src="trailer1"] .ap-toggle .ic-video,
+.audio-panel[data-src="trailer1"] .ap-toggle .ic-trailer2 { display: none; }
+.audio-panel[data-src="trailer1"] .ap-toggle .ic-trailer1 { display: block; }
+.audio-panel[data-src="trailer2"] .ap-toggle .ic-video,
+.audio-panel[data-src="trailer2"] .ap-toggle .ic-trailer1 { display: none; }
+.audio-panel[data-src="trailer2"] .ap-toggle .ic-trailer2 { display: block; }
+.audio-panel[data-src="trailer1"] .ap-toggle {
   border-color: var(--neon);
   background: rgba(255, 95, 162, 0.18);
   box-shadow: 0 0 16px rgba(255, 95, 162, 0.45);
 }
-.audio-panel[data-src="trailer"] .ap-toggle {
+.audio-panel[data-src="trailer2"] .ap-toggle {
   border-color: var(--purple);
   background: rgba(92, 22, 99, 0.35);
   box-shadow: 0 0 16px rgba(92, 22, 99, 0.6);
