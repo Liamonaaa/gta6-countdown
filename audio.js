@@ -51,12 +51,12 @@ if (songEl) {
   songEl.play().catch(() => {});
 }
 
-const retryUnmute = () => {
-  if (unmuted) applyAudioState();
-};
-document.addEventListener("pointerdown", retryUnmute, { once: true });
-document.addEventListener("keydown", retryUnmute, { once: true });
-document.addEventListener("touchstart", retryUnmute, { once: true });
+function isActivePlayerMuted() {
+  if (active === "trailer2") {
+    return !songEl || songEl.muted || songEl.paused;
+  }
+  return !bgPlayer || (bgPlayer.isMuted && bgPlayer.isMuted());
+}
 
 (function loadYT() {
   if (window.YT && window.YT.Player) { initBg(); return; }
@@ -139,6 +139,13 @@ function applyAudioState() {
 }
 
 muteBtn?.addEventListener("click", () => {
+  // First click after page load: state says unmuted but the browser
+  // blocked autoplay-with-sound. This click is the user gesture that
+  // unblocks audio - just apply the state instead of toggling silent.
+  if (unmuted && isActivePlayerMuted()) {
+    applyAudioState();
+    return;
+  }
   unmuted = !unmuted;
   applyAudioState();
 });
