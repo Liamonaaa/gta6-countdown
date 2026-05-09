@@ -137,6 +137,9 @@ a { color: inherit; text-decoration: none; }
 }
 .topnav nav a:hover { color: var(--cream); }
 .topnav nav a:hover::after { transform: scaleX(1); }
+.topnav-right {
+  display: flex; align-items: center; gap: 12px;
+}
 .topnav-cta {
   border: 1px solid rgba(223, 58, 147, 0.6);
   padding: 8px 18px; border-radius: 999px;
@@ -149,6 +152,29 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--neon);
   box-shadow: 0 0 24px rgba(255, 95, 162, 0.5);
 }
+
+.lang-switch {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 210, 123, 0.4);
+  background: rgba(10, 4, 20, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--cream);
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.18em;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.lang-switch:hover {
+  border-color: var(--amber);
+  background: rgba(255, 210, 123, 0.12);
+  box-shadow: 0 0 18px rgba(255, 210, 123, 0.4);
+}
+.lang-flag { font-size: 14px; line-height: 1; }
+.lang-code { font-weight: 700; }
 
 .mini-bar.show ~ .topnav { opacity: 0; pointer-events: none; }
 
@@ -696,4 +722,84 @@ a { color: inherit; text-decoration: none; }
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ===== Hebrew / RTL ===== */
+body.lang-he {
+  font-family: 'Heebo', 'Inter', system-ui, sans-serif;
+}
+body.lang-he .tagline,
+body.lang-he .section-title span,
+body.lang-he .release-date,
+body.lang-he .char-card h3,
+body.lang-he .stat-num,
+body.lang-he .t-year,
+body.lang-he .marquee-track span {
+  font-family: 'Heebo', 'Cinzel', serif;
+  font-weight: 900;
+  font-style: normal;
+}
+body.lang-he .num,
+body.lang-he .stat-num {
+  font-family: 'Limelight', 'Heebo', serif;
+}
+body.lang-he .label,
+body.lang-he .eyebrow,
+body.lang-he .platforms,
+body.lang-he .kicker,
+body.lang-he .footer-line,
+body.lang-he .progress-label,
+body.lang-he .topnav nav a,
+body.lang-he .topnav-cta,
+body.lang-he .lang-switch,
+body.lang-he .mini-bar,
+body.lang-he .scroll-hint {
+  font-family: 'Heebo', sans-serif;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+body.lang-he .label {
+  letter-spacing: 0.15em;
+  font-weight: 600;
+}
+
+html[dir="rtl"] .marquee-track {
+  animation-direction: reverse;
+}
+html[dir="rtl"] .timeline {
+  padding-left: 0;
+  padding-right: 40px;
+}
+html[dir="rtl"] .timeline::before {
+  left: auto;
+  right: 14px;
+}
+html[dir="rtl"] .timeline li {
+  padding-left: 0;
+  padding-right: 24px;
+}
+html[dir="rtl"] .timeline li::before {
+  left: auto;
+  right: -32px;
+}
+html[dir="rtl"] .progress-label {
+  right: auto;
+  left: 0;
+}
+html[dir="rtl"] .progress-fill::after {
+  right: auto;
+  left: -6px;
+}
+html[dir="rtl"] .scroll-hint span {
+  transform: rotate(45deg);
+}
+html[dir="rtl"] .topnav-cta,
+html[dir="rtl"] .nav.official {
+  /* arrow flip handled by content */
+}
+html[dir="rtl"] .kicker {
+  flex-direction: row-reverse;
+}
+html[dir="rtl"] .mini-bar {
+  direction: rtl;
 }

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GTA VI · Countdown to Vice City</title>
+<title data-i18n="title">GTA VI · Countdown to Vice City</title>
 <meta name="description" content="The official-feeling fan countdown to Grand Theft Auto VI — releasing November 19, 2026. Trailer, characters, world, and a live timer." />
 <meta property="og:title" content="GTA VI Countdown · November 19, 2026" />
 <meta property="og:description" content="Live countdown to Grand Theft Auto VI." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;800&family=Inter:wght@300;400;600;800&family=Limelight&family=Russo+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;800&family=Heebo:wght@300;400;700;900&family=Inter:wght@300;400;600;800&family=Limelight&family=Russo+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css" />
 <link rel="icon" type="image/svg+xml" href="logo.svg" />
 </head>
@@ -18,8 +18,8 @@
 <!-- Sticky mini countdown -->
 <div class="mini-bar" id="miniBar" aria-hidden="true">
   <span class="mini-label">GTA VI</span>
-  <span class="mini-time"><b id="mDays">000</b>D : <b id="mHours">00</b>H : <b id="mMinutes">00</b>M : <b id="mSeconds">00</b>S</span>
-  <span class="mini-cta">NOV 19, 2026</span>
+  <span class="mini-time"><b id="mDays">000</b><span data-i18n="mD">D</span> : <b id="mHours">00</b><span data-i18n="mH">H</span> : <b id="mMinutes">00</b><span data-i18n="mM">M</span> : <b id="mSeconds">00</b><span data-i18n="mS">S</span></span>
+  <span class="mini-cta" data-i18n="miniDate">NOV 19, 2026</span>
 </div>
 
 <!-- Video background -->
@@ -43,84 +43,90 @@
 <header class="topnav">
   <a href="#hero" class="topnav-brand">VI</a>
   <nav>
-    <a href="#countdown">Countdown</a>
-    <a href="#trailer">Trailer</a>
-    <a href="#characters">Characters</a>
-    <a href="#world">World</a>
-    <a href="#milestones">Timeline</a>
+    <a href="#countdown" data-i18n="nav.countdown">Countdown</a>
+    <a href="#trailer" data-i18n="nav.trailer">Trailer</a>
+    <a href="#characters" data-i18n="nav.characters">Characters</a>
+    <a href="#world" data-i18n="nav.world">World</a>
+    <a href="#milestones" data-i18n="nav.timeline">Timeline</a>
   </nav>
-  <a href="https://www.rockstargames.com/VI" target="_blank" rel="noopener" class="topnav-cta">Official Site →</a>
+  <div class="topnav-right">
+    <button class="lang-switch" id="langSwitch" type="button" aria-label="Switch language">
+      <span class="lang-flag" id="langFlag">🇮🇱</span>
+      <span class="lang-code" id="langCode">עברית</span>
+    </button>
+    <a href="https://www.rockstargames.com/VI" target="_blank" rel="noopener" class="topnav-cta" data-i18n="nav.official">Official Site →</a>
+  </div>
 </header>
 
 <!-- HERO -->
 <section id="hero" class="hero">
   <div class="hero-frame">
-    <p class="kicker"><span class="dot"></span> ROCKSTAR GAMES PRESENTS</p>
+    <p class="kicker"><span class="dot"></span> <span data-i18n="hero.kicker">ROCKSTAR GAMES PRESENTS</span></p>
     <div class="logo-wrap" data-parallax="0.5">
       <img src="logo.svg" alt="Grand Theft Auto VI" class="logo" />
     </div>
-    <p class="tagline" data-parallax="0.3">Return to Vice City</p>
+    <p class="tagline" data-parallax="0.3" data-i18n="hero.tagline">Return to Vice City</p>
 
     <div id="countdown" class="countdown">
       <div class="unit" data-parallax="0.15">
         <div class="num-stack"><span class="num" id="days">000</span></div>
-        <span class="label">Days</span>
+        <span class="label" data-i18n="cd.days">Days</span>
       </div>
       <span class="sep">:</span>
       <div class="unit" data-parallax="0.18">
         <div class="num-stack"><span class="num" id="hours">00</span></div>
-        <span class="label">Hours</span>
+        <span class="label" data-i18n="cd.hours">Hours</span>
       </div>
       <span class="sep">:</span>
       <div class="unit" data-parallax="0.21">
         <div class="num-stack"><span class="num" id="minutes">00</span></div>
-        <span class="label">Minutes</span>
+        <span class="label" data-i18n="cd.minutes">Minutes</span>
       </div>
       <span class="sep">:</span>
       <div class="unit" data-parallax="0.24">
         <div class="num-stack"><span class="num" id="seconds">00</span></div>
-        <span class="label">Seconds</span>
+        <span class="label" data-i18n="cd.seconds">Seconds</span>
       </div>
     </div>
 
     <div class="release-row">
-      <p class="release-date">NOVEMBER · 19 · 2026</p>
+      <p class="release-date" data-i18n="hero.release">NOVEMBER · 19 · 2026</p>
       <div class="progress" aria-label="Time remaining">
         <div class="progress-fill" id="progressFill"></div>
         <span class="progress-label" id="progressLabel">0% complete</span>
       </div>
-      <p class="platforms">PLAYSTATION 5 &nbsp;·&nbsp; XBOX SERIES X|S</p>
+      <p class="platforms" data-i18n="hero.platforms">PLAYSTATION 5 &nbsp;·&nbsp; XBOX SERIES X|S</p>
     </div>
 
     <a href="#trailer" class="scroll-hint" aria-label="Scroll to trailer">
       <span></span><span></span><span></span>
-      <em>Watch trailer</em>
+      <em data-i18n="hero.watch">Watch trailer</em>
     </a>
   </div>
 </section>
 
 <!-- Marquee -->
 <div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>VICE CITY</span><i>★</i>
-    <span>JASON & LUCIA</span><i>★</i>
-    <span>NOVEMBER 19, 2026</span><i>★</i>
-    <span>BIGGEST GAME EVER</span><i>★</i>
-    <span>WELCOME BACK TO LEONIDA</span><i>★</i>
-    <span>VICE CITY</span><i>★</i>
-    <span>JASON & LUCIA</span><i>★</i>
-    <span>NOVEMBER 19, 2026</span><i>★</i>
-    <span>BIGGEST GAME EVER</span><i>★</i>
-    <span>WELCOME BACK TO LEONIDA</span><i>★</i>
+  <div class="marquee-track" id="marqueeTrack">
+    <span data-i18n="mq.0">VICE CITY</span><i>★</i>
+    <span data-i18n="mq.1">JASON & LUCIA</span><i>★</i>
+    <span data-i18n="mq.2">NOVEMBER 19, 2026</span><i>★</i>
+    <span data-i18n="mq.3">BIGGEST GAME EVER</span><i>★</i>
+    <span data-i18n="mq.4">WELCOME BACK TO LEONIDA</span><i>★</i>
+    <span data-i18n="mq.0">VICE CITY</span><i>★</i>
+    <span data-i18n="mq.1">JASON & LUCIA</span><i>★</i>
+    <span data-i18n="mq.2">NOVEMBER 19, 2026</span><i>★</i>
+    <span data-i18n="mq.3">BIGGEST GAME EVER</span><i>★</i>
+    <span data-i18n="mq.4">WELCOME BACK TO LEONIDA</span><i>★</i>
   </div>
 </div>
 
 <!-- TRAILER -->
 <section id="trailer" class="section">
   <div class="container">
-    <p class="eyebrow">OFFICIAL TRAILER 2</p>
-    <h2 class="section-title"><span>The world is ready.</span></h2>
-    <p class="lede">Bonnie & Clyde for a new generation. Rockstar Games returns to Vice City with its most ambitious open world yet — the state of Leonida, sun-soaked and lawless.</p>
+    <p class="eyebrow" data-i18n="tr.eyebrow">OFFICIAL TRAILER 2</p>
+    <h2 class="section-title"><span data-i18n="tr.title">The world is ready.</span></h2>
+    <p class="lede" data-i18n="tr.lede">Bonnie & Clyde for a new generation. Rockstar Games returns to Vice City with its most ambitious open world yet — the state of Leonida, sun-soaked and lawless.</p>
     <div class="video-card">
       <div class="video-card-frame">
         <iframe
@@ -137,8 +143,8 @@
 <!-- CHARACTERS -->
 <section id="characters" class="section section-dark">
   <div class="container">
-    <p class="eyebrow">PROTAGONISTS</p>
-    <h2 class="section-title"><span>A love story.</span></h2>
+    <p class="eyebrow" data-i18n="ch.eyebrow">PROTAGONISTS</p>
+    <h2 class="section-title"><span data-i18n="ch.title">A love story.</span></h2>
     <div class="char-grid">
       <article class="char-card char-jason">
         <div class="char-portrait" aria-hidden="true">
@@ -154,9 +160,9 @@
             <path d="M70 70 Q100 50 130 70" fill="none" stroke="url(#jg)" stroke-width="2"/>
           </svg>
         </div>
-        <h3>JASON</h3>
-        <p class="char-tag">The Drifter</p>
-        <p class="char-bio">Wants out. A veteran adrift in the Florida Keys, working jobs for the wrong people. Falls hard and fast for Lucia.</p>
+        <h3 data-i18n="ch.jason.name">JASON</h3>
+        <p class="char-tag" data-i18n="ch.jason.tag">The Drifter</p>
+        <p class="char-bio" data-i18n="ch.jason.bio">Wants out. A veteran adrift in the Florida Keys, working jobs for the wrong people. Falls hard and fast for Lucia.</p>
       </article>
       <article class="char-card char-lucia">
         <div class="char-portrait" aria-hidden="true">
@@ -172,9 +178,9 @@
             <path d="M58 70 Q100 30 142 70 L150 95 Q100 75 50 95 Z" fill="url(#lg)" opacity="0.25"/>
           </svg>
         </div>
-        <h3>LUCIA</h3>
-        <p class="char-tag">The Survivor</p>
-        <p class="char-bio">Just out of the system. First female protagonist in Grand Theft Auto. She knows what she wants — and what it costs.</p>
+        <h3 data-i18n="ch.lucia.name">LUCIA</h3>
+        <p class="char-tag" data-i18n="ch.lucia.tag">The Survivor</p>
+        <p class="char-bio" data-i18n="ch.lucia.bio">Just out of the system. First female protagonist in Grand Theft Auto. She knows what she wants — and what it costs.</p>
       </article>
     </div>
   </div>
@@ -183,24 +189,24 @@
 <!-- WORLD -->
 <section id="world" class="section">
   <div class="container">
-    <p class="eyebrow">THE STATE OF LEONIDA</p>
-    <h2 class="section-title"><span>Welcome to paradise.</span></h2>
+    <p class="eyebrow" data-i18n="wo.eyebrow">THE STATE OF LEONIDA</p>
+    <h2 class="section-title"><span data-i18n="wo.title">Welcome to paradise.</span></h2>
     <div class="world-grid">
       <div class="stat">
         <div class="stat-num" data-target="2026">0</div>
-        <div class="stat-label">Release Year</div>
+        <div class="stat-label" data-i18n="wo.s1">Release Year</div>
       </div>
       <div class="stat">
-        <div class="stat-num" data-target="13" data-suffix=" YRS">0</div>
-        <div class="stat-label">Since GTA V Launch</div>
+        <div class="stat-num" data-target="13" data-suffix=" YRS" data-suffix-he=" שנים">0</div>
+        <div class="stat-label" data-i18n="wo.s2">Since GTA V Launch</div>
       </div>
       <div class="stat">
-        <div class="stat-num" data-target="475" data-suffix="M+">0</div>
-        <div class="stat-label">GTA V Copies Sold</div>
+        <div class="stat-num" data-target="475" data-suffix="M+" data-suffix-he="מ׳+">0</div>
+        <div class="stat-label" data-i18n="wo.s3">GTA V Copies Sold</div>
       </div>
       <div class="stat">
         <div class="stat-num" data-target="2" data-suffix="">0</div>
-        <div class="stat-label">Protagonists, One Story</div>
+        <div class="stat-label" data-i18n="wo.s4">Protagonists, One Story</div>
       </div>
     </div>
   </div>
@@ -209,15 +215,15 @@
 <!-- MILESTONES -->
 <section id="milestones" class="section section-dark">
   <div class="container">
-    <p class="eyebrow">THE ROAD TO LAUNCH</p>
-    <h2 class="section-title"><span>Twelve years in the making.</span></h2>
+    <p class="eyebrow" data-i18n="ml.eyebrow">THE ROAD TO LAUNCH</p>
+    <h2 class="section-title"><span data-i18n="ml.title">Twelve years in the making.</span></h2>
     <ol class="timeline">
-      <li><span class="t-year">2013</span><p>GTA V launches. Becomes one of the best-selling games of all time.</p></li>
-      <li><span class="t-year">2022</span><p>Internal footage leaks. Rockstar confirms development.</p></li>
-      <li><span class="t-year">2023</span><p>Trailer 1 drops on December 4 — breaks YouTube records.</p></li>
-      <li><span class="t-year">2025</span><p>Trailer 2 reveals Vice City, Lucia, and the full vibe.</p></li>
-      <li class="now"><span class="t-year">TODAY</span><p>The wait is almost over.</p></li>
-      <li class="future"><span class="t-year">NOV 19, 2026</span><p>Grand Theft Auto VI · Vice City returns.</p></li>
+      <li><span class="t-year">2013</span><p data-i18n="ml.2013">GTA V launches. Becomes one of the best-selling games of all time.</p></li>
+      <li><span class="t-year">2022</span><p data-i18n="ml.2022">Internal footage leaks. Rockstar confirms development.</p></li>
+      <li><span class="t-year">2023</span><p data-i18n="ml.2023">Trailer 1 drops on December 4 — breaks YouTube records.</p></li>
+      <li><span class="t-year">2025</span><p data-i18n="ml.2025">Trailer 2 reveals Vice City, Lucia, and the full vibe.</p></li>
+      <li class="now"><span class="t-year" data-i18n="ml.todayY">TODAY</span><p data-i18n="ml.today">The wait is almost over.</p></li>
+      <li class="future"><span class="t-year" data-i18n="ml.futY">NOV 19, 2026</span><p data-i18n="ml.fut">Grand Theft Auto VI · Vice City returns.</p></li>
     </ol>
   </div>
 </section>
@@ -226,12 +232,13 @@
 <footer class="site-footer">
   <div class="container">
     <img src="logo.svg" alt="" class="footer-logo" />
-    <p class="footer-line">A FAN-MADE COUNTDOWN</p>
-    <p class="footer-fine">All trademarks, characters, and assets belong to Rockstar Games and Take-Two Interactive. Not affiliated with, endorsed by, or sponsored by Rockstar Games.</p>
-    <p class="footer-fine">Built with caffeine and patience · 2026</p>
+    <p class="footer-line" data-i18n="ft.line">A FAN-MADE COUNTDOWN</p>
+    <p class="footer-fine" data-i18n="ft.fine1">All trademarks, characters, and assets belong to Rockstar Games and Take-Two Interactive. Not affiliated with, endorsed by, or sponsored by Rockstar Games.</p>
+    <p class="footer-fine" data-i18n="ft.fine2">Built with caffeine and patience · 2026</p>
   </div>
 </footer>
 
+<script src="i18n.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

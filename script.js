@@ -34,8 +34,10 @@ function tick() {
     if (els.md) els.md.textContent = '000';
     ['mh','mm','ms'].forEach(k => { if (els[k]) els[k].textContent = '00'; });
     if (els.pf) els.pf.style.width = '100%';
-    if (els.pl) els.pl.textContent = '100% — released';
-    const t = document.querySelector('.section-title span');
+    if (els.pl) {
+      const dict = window.__dict;
+      els.pl.textContent = (dict && dict["cd.released"]) || '100% — released';
+    }
     return;
   }
 
@@ -60,7 +62,11 @@ function tick() {
   const elapsed = Date.now() - ORIGIN_DATE;
   const pct = Math.max(0, Math.min(100, (elapsed / total) * 100));
   if (els.pf) els.pf.style.width = pct.toFixed(2) + '%';
-  if (els.pl) els.pl.textContent = pct.toFixed(1) + '% complete';
+  if (els.pl) {
+    const dict = window.__dict;
+    const tmpl = (dict && dict["cd.complete"]) || "{p}% complete";
+    els.pl.textContent = tmpl.replace("{p}", pct.toFixed(1));
+  }
 }
 
 tick();
@@ -122,24 +128,44 @@ revealTargets.forEach(el => io.observe(el));
 
 // ===== Stat counter =====
 const statNums = document.querySelectorAll('.stat-num');
+const statFinal = new WeakMap();
+
+function activeSuffix(el) {
+  return el.dataset.activeSuffix !== undefined
+    ? el.dataset.activeSuffix
+    : (el.dataset.suffix || '');
+}
+
 const statIO = new IntersectionObserver((entries) => {
   entries.forEach(en => {
     if (!en.isIntersecting) return;
     const el = en.target;
     const target = parseInt(el.dataset.target, 10) || 0;
-    const suffix = el.dataset.suffix || '';
     const dur = 1400;
     const start = performance.now();
     const ease = t => 1 - Math.pow(1 - t, 3);
     function step(now) {
       const t = Math.min(1, (now - start) / dur);
       const v = Math.floor(target * ease(t));
-      el.textContent = v + suffix;
+      el.textContent = v + activeSuffix(el);
       if (t < 1) requestAnimationFrame(step);
-      else el.textContent = target + suffix;
+      else {
+        el.textContent = target + activeSuffix(el);
+        statFinal.set(el, true);
+      }
     }
     requestAnimationFrame(step);
     statIO.unobserve(el);
   });
 }, { threshold: 0.5 });
 statNums.forEach(el => statIO.observe(el));
+
+// On lang change, refresh already-counted stats with new suffix
+document.addEventListener('langchange', () => {
+  statNums.forEach(el => {
+    if (statFinal.get(el)) {
+      const target = parseInt(el.dataset.target, 10) || 0;
+      el.textContent = target + activeSuffix(el);
+    }
+  });
+});
