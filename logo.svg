@@ -1,37 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" width="900" height="540">
   <defs>
-    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffb3d9"/>
-      <stop offset="40%" stop-color="#ff2d95"/>
-      <stop offset="100%" stop-color="#a8005c"/>
+    <linearGradient id="pinkBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#ffd6ec"/>
+      <stop offset="20%"  stop-color="#ff6fb5"/>
+      <stop offset="55%"  stop-color="#df3a93"/>
+      <stop offset="100%" stop-color="#7a1857"/>
     </linearGradient>
-    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#b3f7ff"/>
-      <stop offset="50%" stop-color="#00f0ff"/>
-      <stop offset="100%" stop-color="#0088a8"/>
+    <linearGradient id="pinkHi" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#fff" stop-opacity="0.85"/>
+      <stop offset="40%"  stop-color="#ffd6ec" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#fff7b3"/>
-      <stop offset="50%" stop-color="#ffd700"/>
-      <stop offset="100%" stop-color="#b8860b"/>
-    </linearGradient>
-    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="6" result="b"/>
-      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
   </defs>
 
-  <g filter="url(#glow)" font-family="'Arial Black', 'Helvetica', sans-serif" font-weight="900" font-style="italic">
-    <text x="400" y="160" text-anchor="middle" font-size="180" fill="url(#pinkGrad)" stroke="#1a0033" stroke-width="6" letter-spacing="-4">GRAND</text>
-    <text x="400" y="160" text-anchor="middle" font-size="180" fill="url(#pinkGrad)" letter-spacing="-4">GRAND</text>
+  <!-- GRAND THEFT AUTO row -->
+  <g font-family="'Arial Black','Helvetica Neue',sans-serif" font-weight="900" font-style="italic" text-anchor="middle" filter="url(#softGlow)">
+    <!-- dark backdrop offset for depth -->
+    <text x="454" y="160" font-size="92" letter-spacing="-2" fill="#3a0a26" opacity="0.55">GRAND THEFT AUTO</text>
+    <!-- main stroke (dark outline) -->
+    <text x="450" y="156" font-size="92" letter-spacing="-2" fill="none" stroke="#1a0410" stroke-width="6" stroke-linejoin="round">GRAND THEFT AUTO</text>
+    <!-- gradient fill -->
+    <text x="450" y="156" font-size="92" letter-spacing="-2" fill="url(#pinkBody)">GRAND THEFT AUTO</text>
+    <!-- highlight overlay -->
+    <text x="450" y="156" font-size="92" letter-spacing="-2" fill="url(#pinkHi)">GRAND THEFT AUTO</text>
+  </g>
 
-    <text x="180" y="290" text-anchor="middle" font-size="140" fill="url(#cyanGrad)" stroke="#1a0033" stroke-width="6" letter-spacing="-4">THEFT</text>
-    <text x="180" y="290" text-anchor="middle" font-size="140" fill="url(#cyanGrad)" letter-spacing="-4">THEFT</text>
-
-    <text x="430" y="290" text-anchor="middle" font-size="140" fill="url(#yellowGrad)" stroke="#1a0033" stroke-width="6" letter-spacing="-4">AUTO</text>
-    <text x="430" y="290" text-anchor="middle" font-size="140" fill="url(#yellowGrad)" letter-spacing="-4">AUTO</text>
-
-    <text x="690" y="300" text-anchor="middle" font-size="170" fill="url(#pinkGrad)" stroke="#1a0033" stroke-width="6" letter-spacing="-4">VI</text>
-    <text x="690" y="300" text-anchor="middle" font-size="170" fill="url(#pinkGrad)" letter-spacing="-4">VI</text>
+  <!-- VI massive -->
+  <g font-family="'Arial Black','Helvetica Neue',sans-serif" font-weight="900" font-style="italic" text-anchor="middle" filter="url(#softGlow)">
+    <text x="458" y="470" font-size="380" letter-spacing="-8" fill="#3a0a26" opacity="0.6">VI</text>
+    <text x="450" y="460" font-size="380" letter-spacing="-8" fill="none" stroke="#1a0410" stroke-width="10" stroke-linejoin="round">VI</text>
+    <text x="450" y="460" font-size="380" letter-spacing="-8" fill="url(#pinkBody)">VI</text>
+    <text x="450" y="460" font-size="380" letter-spacing="-8" fill="url(#pinkHi)">VI</text>
   </g>
 </svg>
