@@ -69,8 +69,17 @@ function tick() {
   }
 }
 
-tick();
-setInterval(tick, 1000);
+function scheduleTick() {
+  tick();
+  const now = Date.now();
+  const delay = 1000 - (now % 1000) + 8;
+  setTimeout(scheduleTick, delay);
+}
+scheduleTick();
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) tick();
+});
 
 // ===== Sticky mini-bar on scroll =====
 const miniBar = document.getElementById('miniBar');
