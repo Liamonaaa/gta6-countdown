@@ -36,12 +36,20 @@
   </iframe>
 </div>
 
-<!-- Hidden Vice City theme audio player -->
+<!-- Hidden audio-only players -->
 <div class="theme-audio" aria-hidden="true">
   <iframe
     id="themePlayer"
-    src="https://www.youtube.com/embed/t9d8GprMleU?autoplay=1&mute=1&controls=0&loop=1&playlist=t9d8GprMleU&playsinline=1&enablejsapi=1"
-    title="GTA Vice City Theme"
+    src="https://www.youtube.com/embed/hH2gvfKZbL0?autoplay=1&mute=1&controls=0&loop=1&playlist=hH2gvfKZbL0&playsinline=1&enablejsapi=1"
+    title="GTA VI song"
+    allow="autoplay; encrypted-media"
+    frameborder="0"
+    referrerpolicy="strict-origin-when-cross-origin">
+  </iframe>
+  <iframe
+    id="bonusPlayer"
+    src="https://www.youtube.com/embed/06YQ1cHfIKQ?autoplay=1&mute=1&controls=0&loop=1&playlist=06YQ1cHfIKQ&playsinline=1&enablejsapi=1"
+    title="GTA VI bonus song"
     allow="autoplay; encrypted-media"
     frameborder="0"
     referrerpolicy="strict-origin-when-cross-origin">
@@ -57,7 +65,8 @@
   <input type="range" min="0" max="100" value="55" id="apVolume" class="ap-volume" aria-label="Volume" />
   <div class="ap-sources">
     <button type="button" class="ap-src" data-src="trailer" id="apSrcTrailer" data-i18n="ap.trailer">TRAILER</button>
-    <button type="button" class="ap-src active" data-src="theme" id="apSrcTheme" data-i18n="ap.theme">VICE CITY</button>
+    <button type="button" class="ap-src active" data-src="theme" id="apSrcTheme" data-i18n="ap.theme">SONG</button>
+    <button type="button" class="ap-src" data-src="bonus" id="apSrcBonus" data-i18n="ap.bonus">BONUS</button>
   </div>
 </div>
 <div class="bg-tint"></div>

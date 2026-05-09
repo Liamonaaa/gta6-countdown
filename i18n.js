@@ -56,7 +56,8 @@ const I18N = {
     "ft.fine1": "All trademarks, characters, and assets belong to Rockstar Games and Take-Two Interactive. Not affiliated with, endorsed by, or sponsored by Rockstar Games.",
     "ft.fine2": "Built with caffeine and patience · 2026",
     "ap.trailer": "TRAILER",
-    "ap.theme": "VICE CITY",
+    "ap.theme": "SONG",
+    "ap.bonus": "BONUS",
     "switchTo": { flag: "🇮🇱", code: "עברית" }
   },
   he: {
@@ -116,7 +117,8 @@ const I18N = {
     "ft.fine1": "כל הסימנים הרשומים, הדמויות והנכסים שייכים ל־Rockstar Games ול־Take-Two Interactive. האתר אינו משויך לרוקסטאר גיימס, אינו מאושר על ידם ואינו ממומן על ידם.",
     "ft.fine2": "נבנה עם קפאין וסבלנות · 2026",
     "ap.trailer": "טריילר",
-    "ap.theme": "וייס סיטי",
+    "ap.theme": "שיר",
+    "ap.bonus": "בונוס",
     "switchTo": { flag: "🇺🇸", code: "EN" }
   }
 };

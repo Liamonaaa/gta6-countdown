@@ -1,21 +1,22 @@
 // YouTube IFrame API audio control
-// Two players: bgPlayer (trailer video, visible bg) + themePlayer (Vice City theme, audio-only hidden)
-// User picks active source. Browsers require user gesture to unmute.
+// 3 players: trailer (visible bg), theme (GTA VI song), bonus (extra song)
 
 const VOL_KEY = "gta6-vol";
 const SRC_KEY = "gta6-src";
 
-let bgPlayer = null;
-let themePlayer = null;
-let ready = { bg: false, theme: false };
+const SOURCES = ["trailer", "theme", "bonus"];
+const PLAYER_IDS = { trailer: "bgPlayer", theme: "themePlayer", bonus: "bonusPlayer" };
+
+const players = {};
+const ready = {};
 
 const panel = document.getElementById("audioPanel");
 const muteBtn = document.getElementById("apMute");
 const volSlider = document.getElementById("apVolume");
-const srcTrailer = document.getElementById("apSrcTrailer");
-const srcTheme = document.getElementById("apSrcTheme");
+const srcButtons = document.querySelectorAll(".ap-src");
 
 let active = localStorage.getItem(SRC_KEY) || "theme";
+if (!SOURCES.includes(active)) active = "theme";
 let volume = parseInt(localStorage.getItem(VOL_KEY) ?? "55", 10);
 let unmuted = false;
 
@@ -33,57 +34,49 @@ window.onYouTubeIframeAPIReady = initPlayers;
 
 function initPlayers() {
   if (!window.YT || !window.YT.Player) return;
-  bgPlayer = new YT.Player("bgPlayer", {
-    events: {
-      onReady: () => {
-        ready.bg = true;
-        try { bgPlayer.setVolume(volume); bgPlayer.mute(); bgPlayer.playVideo(); } catch {}
-        applyAudioState();
-      },
-      onStateChange: e => {
-        if (e.data === YT.PlayerState.ENDED) try { bgPlayer.playVideo(); } catch {}
+  SOURCES.forEach(src => {
+    const id = PLAYER_IDS[src];
+    if (players[src] || !document.getElementById(id)) return;
+    players[src] = new YT.Player(id, {
+      events: {
+        onReady: () => {
+          ready[src] = true;
+          try {
+            players[src].setVolume(volume);
+            players[src].mute();
+            players[src].playVideo();
+          } catch {}
+          applyAudioState();
+        },
+        onStateChange: e => {
+          if (e.data === YT.PlayerState.ENDED) {
+            try { players[src].playVideo(); } catch {}
+          }
+        }
       }
-    }
-  });
-  themePlayer = new YT.Player("themePlayer", {
-    events: {
-      onReady: () => {
-        ready.theme = true;
-        try { themePlayer.setVolume(volume); themePlayer.mute(); themePlayer.playVideo(); } catch {}
-        applyAudioState();
-      },
-      onStateChange: e => {
-        if (e.data === YT.PlayerState.ENDED) try { themePlayer.playVideo(); } catch {}
-      }
-    }
+    });
   });
 }
 
 function applyAudioState() {
-  if (!bgPlayer || !themePlayer) return;
-  const wantTrailer = active === "trailer";
-  try {
-    bgPlayer.setVolume(volume);
-    themePlayer.setVolume(volume);
-    if (unmuted && wantTrailer) {
-      bgPlayer.unMute();
-      themePlayer.mute();
-    } else if (unmuted && !wantTrailer) {
-      themePlayer.unMute();
-      bgPlayer.mute();
-    } else {
-      bgPlayer.mute();
-      themePlayer.mute();
-    }
-  } catch {}
+  SOURCES.forEach(src => {
+    const p = players[src];
+    if (!p || !ready[src]) return;
+    try {
+      p.setVolume(volume);
+      if (unmuted && active === src) p.unMute();
+      else p.mute();
+    } catch {}
+  });
   panel.dataset.active = active;
   panel.dataset.muted = unmuted ? "false" : "true";
 }
 
 function setActiveUI(src) {
-  if (srcTrailer) srcTrailer.classList.toggle("active", src === "trailer");
-  if (srcTheme)   srcTheme.classList.toggle("active", src === "theme");
-  if (panel)      panel.dataset.active = src;
+  srcButtons.forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.src === src);
+  });
+  if (panel) panel.dataset.active = src;
 }
 
 muteBtn?.addEventListener("click", () => {
@@ -94,21 +87,19 @@ muteBtn?.addEventListener("click", () => {
 volSlider?.addEventListener("input", () => {
   volume = parseInt(volSlider.value, 10);
   localStorage.setItem(VOL_KEY, String(volume));
-  if (bgPlayer && ready.bg)    try { bgPlayer.setVolume(volume); } catch {}
-  if (themePlayer && ready.theme) try { themePlayer.setVolume(volume); } catch {}
+  SOURCES.forEach(src => {
+    if (players[src] && ready[src]) {
+      try { players[src].setVolume(volume); } catch {}
+    }
+  });
   if (volume === 0 && unmuted) { unmuted = false; applyAudioState(); }
 });
 
-srcTrailer?.addEventListener("click", () => {
-  active = "trailer";
-  localStorage.setItem(SRC_KEY, active);
-  setActiveUI(active);
-  applyAudioState();
-});
-
-srcTheme?.addEventListener("click", () => {
-  active = "theme";
-  localStorage.setItem(SRC_KEY, active);
-  setActiveUI(active);
-  applyAudioState();
+srcButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    active = btn.dataset.src;
+    localStorage.setItem(SRC_KEY, active);
+    setActiveUI(active);
+    applyAudioState();
+  });
 });
