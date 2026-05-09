@@ -179,37 +179,52 @@ document.addEventListener('langchange', () => {
   });
 });
 
-// ===== Leonida tour: sticky scroll panel switcher =====
+// ===== Leonida tour: sticky scroll-bound cinematic =====
 const ltSection = document.getElementById('leonida-tour');
 if (ltSection) {
   const ltPanels = ltSection.querySelectorAll('.lt-panel');
   const ltDots = ltSection.querySelectorAll('.lt-dot');
-  const ltCount = ltPanels.length;
-  let ltCurrent = 0;
+  const N = ltPanels.length;
   let ltRaf = 0;
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   function ltUpdate() {
     ltRaf = 0;
     const rect = ltSection.getBoundingClientRect();
     const vh = window.innerHeight;
-    const total = ltSection.offsetHeight - vh; // scrollable distance
+    const total = ltSection.offsetHeight - vh;
     if (total <= 0) return;
-    const scrolled = Math.max(0, Math.min(total, -rect.top));
-    const progress = scrolled / total; // 0..1
-    let idx = Math.floor(progress * ltCount);
-    if (idx >= ltCount) idx = ltCount - 1;
-    if (idx === ltCurrent) return;
-    ltCurrent = idx;
-    ltPanels.forEach((p, i) => p.classList.toggle('active', i === idx));
-    ltDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    const scrolled = clamp(-rect.top, 0, total);
+    const progress = scrolled / total; // 0..1 across whole section
+    const slot = 1 / (N - 1); // distance between panel anchors
+
+    ltPanels.forEach((p, i) => {
+      const center = i * slot;
+      const dist = (progress - center) / slot; // -1 entering, 0 center, +1 leaving
+      const adist = Math.abs(dist);
+      const op = clamp(1 - adist, 0, 1);
+      const local = clamp(1 - adist * 1.4, 0, 1);
+      const frac = clamp((dist + 1) / 2, 0, 1);
+      p.style.setProperty('--op', op.toFixed(3));
+      p.style.setProperty('--local', local.toFixed(3));
+      p.style.setProperty('--frac', frac.toFixed(3));
+      p.style.setProperty('--dist', dist.toFixed(3));
+    });
+
+    let activeIdx = clamp(Math.round(progress * (N - 1)), 0, N - 1);
+    ltDots.forEach((d, i) => {
+      const center = i * slot;
+      const near = clamp(1 - Math.abs(progress - center) / slot, 0, 1);
+      d.style.setProperty('--near', near.toFixed(3));
+      d.classList.toggle('active', i === activeIdx);
+    });
   }
 
   function ltOnScroll() {
     if (!ltRaf) ltRaf = requestAnimationFrame(ltUpdate);
   }
 
-  // First dot active on load
-  ltDots[0]?.classList.add('active');
   window.addEventListener('scroll', ltOnScroll, { passive: true });
   window.addEventListener('resize', ltOnScroll);
   ltUpdate();
