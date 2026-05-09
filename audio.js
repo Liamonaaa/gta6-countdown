@@ -1,15 +1,17 @@
-// YouTube IFrame API: bg video + theme song with active-source toggle
+// YouTube IFrame API: bg video + theme song + trailer audio with cycle toggle
 
 const VOL_KEY = "gta6-vol";
 const SRC_KEY = "gta6-src";
 
-const SOURCES = ["video", "song"];
-const PLAYER_IDS = { video: "bgPlayer", song: "songPlayer" };
+const SOURCES = ["video", "song", "trailer"];
+const PLAYER_IDS = { video: "bgPlayer", song: "songPlayer", trailer: "trailerPlayer" };
+const LABELS = { video: "VIBES", song: "THEME", trailer: "TRAILER 1" };
 
 const panel = document.getElementById("audioPanel");
 const muteBtn = document.getElementById("apMute");
 const volSlider = document.getElementById("apVolume");
 const toggleBtn = document.getElementById("apToggle");
+const labelEl = document.getElementById("apLabel");
 
 const players = {};
 const ready = {};
@@ -24,6 +26,7 @@ if (panel) {
   panel.dataset.muted = "true";
   panel.dataset.src = active;
 }
+if (labelEl) labelEl.textContent = LABELS[active];
 
 (function loadYT() {
   if (window.YT && window.YT.Player) { initPlayers(); return; }
@@ -74,6 +77,7 @@ function applyAudioState() {
     panel.dataset.muted = unmuted ? "false" : "true";
     panel.dataset.src = active;
   }
+  if (labelEl) labelEl.textContent = LABELS[active];
 }
 
 muteBtn?.addEventListener("click", () => {
@@ -93,7 +97,8 @@ volSlider?.addEventListener("input", () => {
 });
 
 toggleBtn?.addEventListener("click", () => {
-  active = active === "video" ? "song" : "video";
+  const i = SOURCES.indexOf(active);
+  active = SOURCES[(i + 1) % SOURCES.length];
   localStorage.setItem(SRC_KEY, active);
   applyAudioState();
 });
