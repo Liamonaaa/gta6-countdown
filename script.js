@@ -178,3 +178,39 @@ document.addEventListener('langchange', () => {
     }
   });
 });
+
+// ===== Leonida tour: sticky scroll panel switcher =====
+const ltSection = document.getElementById('leonida-tour');
+if (ltSection) {
+  const ltPanels = ltSection.querySelectorAll('.lt-panel');
+  const ltDots = ltSection.querySelectorAll('.lt-dot');
+  const ltCount = ltPanels.length;
+  let ltCurrent = 0;
+  let ltRaf = 0;
+
+  function ltUpdate() {
+    ltRaf = 0;
+    const rect = ltSection.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = ltSection.offsetHeight - vh; // scrollable distance
+    if (total <= 0) return;
+    const scrolled = Math.max(0, Math.min(total, -rect.top));
+    const progress = scrolled / total; // 0..1
+    let idx = Math.floor(progress * ltCount);
+    if (idx >= ltCount) idx = ltCount - 1;
+    if (idx === ltCurrent) return;
+    ltCurrent = idx;
+    ltPanels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    ltDots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function ltOnScroll() {
+    if (!ltRaf) ltRaf = requestAnimationFrame(ltUpdate);
+  }
+
+  // First dot active on load
+  ltDots[0]?.classList.add('active');
+  window.addEventListener('scroll', ltOnScroll, { passive: true });
+  window.addEventListener('resize', ltOnScroll);
+  ltUpdate();
+}
