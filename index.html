@@ -26,7 +26,7 @@
 <div class="bg-video">
   <iframe
     id="bgPlayer"
-    src="https://www.youtube.com/embed/06YQ1cHfIKQ?autoplay=1&mute=1&controls=0&loop=1&playlist=06YQ1cHfIKQ&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1"
+    src="https://www.youtube.com/embed/06YQ1cHfIKQ?autoplay=1&mute=1&controls=0&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1"
     title="GTA VI background"
     allow="autoplay; encrypted-media"
     frameborder="0"
@@ -43,6 +43,15 @@
     <svg class="ic-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
   </button>
   <input type="range" min="0" max="100" value="55" id="apVolume" class="ap-volume" aria-label="Volume" />
+  <div class="ap-track">
+    <button class="ap-nav" id="apPrev" type="button" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+    </button>
+    <span class="ap-title" id="apTitle">—</span>
+    <button class="ap-nav" id="apNext" type="button" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+    </button>
+  </div>
 </div>
 <div class="bg-tint"></div>
 <div class="grain" aria-hidden="true"></div>
