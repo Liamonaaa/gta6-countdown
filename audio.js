@@ -31,13 +31,22 @@ let currentBgId = "06YQ1cHfIKQ";
 let active = localStorage.getItem(SRC_KEY) || "vibes";
 if (!SOURCES.includes(active)) active = "vibes";
 let volume = parseInt(localStorage.getItem(VOL_KEY) ?? "55", 10);
-let unmuted = false;
+let unmuted = true;
 
 if (volSlider) volSlider.value = volume;
 if (panel) {
-  panel.dataset.muted = "true";
+  panel.dataset.muted = "false";
   panel.dataset.src = active;
 }
+
+// Browsers block autoplay-with-sound until a gesture. Retry on first
+// user interaction so the muted->unmuted attempt actually takes.
+const retryUnmute = () => {
+  if (unmuted) applyAudioState();
+};
+document.addEventListener("pointerdown", retryUnmute, { once: true });
+document.addEventListener("keydown", retryUnmute, { once: true });
+document.addEventListener("touchstart", retryUnmute, { once: true });
 if (labelEl) labelEl.textContent = LABELS[active];
 
 (function loadYT() {
@@ -76,7 +85,9 @@ function initPlayers() {
             bgWrap?.classList.remove("playing");
           }
           if (e.data === YT.PlayerState.ENDED) {
-            try { bgPlayer.playVideo(); } catch {}
+            // active source video finished -> move to the next source
+            if (active !== "trailer2") advance(1);
+            else { try { bgPlayer.playVideo(); } catch {} }
           }
         }
       }
@@ -97,7 +108,8 @@ function initPlayers() {
         },
         onStateChange: e => {
           if (e.data === YT.PlayerState.ENDED) {
-            try { songPlayer.playVideo(); } catch {}
+            if (active === "trailer2") advance(1);
+            else { try { songPlayer.playVideo(); } catch {} }
           }
         }
       }
