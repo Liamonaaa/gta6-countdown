@@ -37,17 +37,8 @@
   <div class="bg-mask" id="bgMask" aria-hidden="true"></div>
 </div>
 
-<!-- Hidden audio source (theme song for Trailer 2) -->
-<div class="audio-hidden" aria-hidden="true">
-  <iframe
-    id="songPlayer"
-    src="https://www.youtube-nocookie.com/embed/hH2gvfKZbL0?autoplay=1&mute=1&controls=0&loop=1&playlist=hH2gvfKZbL0&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1&disablekb=1"
-    title="GTA VI theme"
-    allow="autoplay; encrypted-media"
-    frameborder="0"
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
-</div>
+<!-- Local theme song audio (used when Trailer 2 is the active source) -->
+<audio id="songPlayer" src="audio/theme.webm" preload="auto" loop muted></audio>
 
 <!-- Audio control panel -->
 <div class="audio-panel" id="audioPanel" data-muted="true" data-src="video">

@@ -1,7 +1,7 @@
 // Three sources, each with its own background video and audio.
-// vibes    -> bg = 06YQ1cHfIKQ, audio = same iframe
-// trailer1 -> bg = QdBZY2fkU-0, audio = same iframe
-// trailer2 -> bg = VQRLujxTm3c (muted), audio = hH2gvfKZbL0 (songPlayer)
+// vibes    -> bg = 06YQ1cHfIKQ (YT iframe), audio = same iframe
+// trailer1 -> bg = QdBZY2fkU-0 (YT iframe), audio = same iframe
+// trailer2 -> bg = VQRLujxTm3c (YT iframe, muted), audio = local audio/theme.webm
 
 const VOL_KEY = "gta6-vol";
 const SRC_KEY = "gta6-src";
@@ -21,11 +21,10 @@ const prevBtn = document.getElementById("apPrev");
 const nextBtn = document.getElementById("apNext");
 const labelEl = document.getElementById("apLabel");
 const bgWrap = document.getElementById("bgVideoWrap");
+const songEl = document.getElementById("songPlayer");
 
 let bgPlayer = null;
-let songPlayer = null;
 let bgReady = false;
-let songReady = false;
 let currentBgId = "06YQ1cHfIKQ";
 
 let active = localStorage.getItem(SRC_KEY) || "vibes";
@@ -38,83 +37,68 @@ if (panel) {
   panel.dataset.muted = "false";
   panel.dataset.src = active;
 }
+if (labelEl) labelEl.textContent = LABELS[active];
 
-// Browsers block autoplay-with-sound until a gesture. Retry on first
-// user interaction so the muted->unmuted attempt actually takes.
+if (songEl) {
+  songEl.volume = volume / 100;
+  songEl.muted = true;
+  songEl.loop = false; // we manage end-of-track via "ended" listener
+  songEl.addEventListener("ended", () => {
+    if (active === "trailer2") advance(1);
+    else { try { songEl.currentTime = 0; songEl.play().catch(() => {}); } catch {} }
+  });
+  // Best-effort initial play; browsers may keep it paused until gesture
+  songEl.play().catch(() => {});
+}
+
 const retryUnmute = () => {
   if (unmuted) applyAudioState();
 };
 document.addEventListener("pointerdown", retryUnmute, { once: true });
 document.addEventListener("keydown", retryUnmute, { once: true });
 document.addEventListener("touchstart", retryUnmute, { once: true });
-if (labelEl) labelEl.textContent = LABELS[active];
 
 (function loadYT() {
-  if (window.YT && window.YT.Player) { initPlayers(); return; }
+  if (window.YT && window.YT.Player) { initBg(); return; }
   const tag = document.createElement("script");
   tag.src = "https://www.youtube.com/iframe_api";
   document.head.appendChild(tag);
 })();
 
-window.onYouTubeIframeAPIReady = initPlayers;
+window.onYouTubeIframeAPIReady = initBg;
 
-function initPlayers() {
+function initBg() {
   if (!window.YT || !window.YT.Player) return;
-
-  if (!bgPlayer && document.getElementById("bgPlayer")) {
-    bgPlayer = new YT.Player("bgPlayer", {
-      events: {
-        onReady: () => {
-          bgReady = true;
-          try {
-            bgPlayer.setVolume(volume);
-            bgPlayer.mute();
-            bgPlayer.playVideo();
-          } catch {}
-          syncBgVideo(true);
-          applyAudioState();
-        },
-        onStateChange: e => {
-          if (e.data === YT.PlayerState.PLAYING) {
-            bgWrap?.classList.add("playing");
-          } else if (
-            e.data === YT.PlayerState.BUFFERING ||
-            e.data === YT.PlayerState.CUED ||
-            e.data === YT.PlayerState.UNSTARTED
-          ) {
-            bgWrap?.classList.remove("playing");
-          }
-          if (e.data === YT.PlayerState.ENDED) {
-            // active source video finished -> move to the next source
-            if (active !== "trailer2") advance(1);
-            else { try { bgPlayer.playVideo(); } catch {} }
-          }
+  if (bgPlayer || !document.getElementById("bgPlayer")) return;
+  bgPlayer = new YT.Player("bgPlayer", {
+    events: {
+      onReady: () => {
+        bgReady = true;
+        try {
+          bgPlayer.setVolume(volume);
+          bgPlayer.mute();
+          bgPlayer.playVideo();
+        } catch {}
+        syncBgVideo(true);
+        applyAudioState();
+      },
+      onStateChange: e => {
+        if (e.data === YT.PlayerState.PLAYING) {
+          bgWrap?.classList.add("playing");
+        } else if (
+          e.data === YT.PlayerState.BUFFERING ||
+          e.data === YT.PlayerState.CUED ||
+          e.data === YT.PlayerState.UNSTARTED
+        ) {
+          bgWrap?.classList.remove("playing");
+        }
+        if (e.data === YT.PlayerState.ENDED) {
+          if (active !== "trailer2") advance(1);
+          else { try { bgPlayer.playVideo(); } catch {} }
         }
       }
-    });
-  }
-
-  if (!songPlayer && document.getElementById("songPlayer")) {
-    songPlayer = new YT.Player("songPlayer", {
-      events: {
-        onReady: () => {
-          songReady = true;
-          try {
-            songPlayer.setVolume(volume);
-            songPlayer.mute();
-            songPlayer.playVideo();
-          } catch {}
-          applyAudioState();
-        },
-        onStateChange: e => {
-          if (e.data === YT.PlayerState.ENDED) {
-            if (active === "trailer2") advance(1);
-            else { try { songPlayer.playVideo(); } catch {} }
-          }
-        }
-      }
-    });
-  }
+    }
+  });
 }
 
 function syncBgVideo(force) {
@@ -123,15 +107,12 @@ function syncBgVideo(force) {
   currentBgId = desired;
   if (!bgPlayer || !bgReady) return;
   bgWrap?.classList.remove("playing");
-  try {
-    bgPlayer.loadVideoById(desired);
-  } catch {}
+  try { bgPlayer.loadVideoById(desired); } catch {}
 }
 
 function applyAudioState() {
   syncBgVideo(false);
 
-  // bgPlayer audio: only when active is vibes or trailer1
   if (bgPlayer && bgReady) {
     try {
       bgPlayer.setVolume(volume);
@@ -140,13 +121,14 @@ function applyAudioState() {
     } catch {}
   }
 
-  // songPlayer audio: only when active is trailer2
-  if (songPlayer && songReady) {
-    try {
-      songPlayer.setVolume(volume);
-      if (unmuted && active === "trailer2") songPlayer.unMute();
-      else songPlayer.mute();
-    } catch {}
+  if (songEl) {
+    songEl.volume = volume / 100;
+    if (unmuted && active === "trailer2") {
+      songEl.muted = false;
+      songEl.play().catch(() => {});
+    } else {
+      songEl.muted = true;
+    }
   }
 
   if (panel) {
@@ -165,7 +147,7 @@ volSlider?.addEventListener("input", () => {
   volume = parseInt(volSlider.value, 10);
   localStorage.setItem(VOL_KEY, String(volume));
   if (bgPlayer && bgReady) { try { bgPlayer.setVolume(volume); } catch {} }
-  if (songPlayer && songReady) { try { songPlayer.setVolume(volume); } catch {} }
+  if (songEl) songEl.volume = volume / 100;
   if (volume === 0 && unmuted) { unmuted = false; applyAudioState(); }
 });
 
@@ -173,8 +155,8 @@ function advance(delta) {
   const i = SOURCES.indexOf(active);
   active = SOURCES[((i + delta) % SOURCES.length + SOURCES.length) % SOURCES.length];
   localStorage.setItem(SRC_KEY, active);
-  if (active === "trailer2" && songPlayer && songReady) {
-    try { songPlayer.seekTo(0, true); } catch {}
+  if (active === "trailer2" && songEl) {
+    try { songEl.currentTime = 0; songEl.play().catch(() => {}); } catch {}
   }
   applyAudioState();
 }
