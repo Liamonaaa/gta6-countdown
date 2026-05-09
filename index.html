@@ -55,12 +55,15 @@
     <svg class="ic-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
   </button>
   <input type="range" min="0" max="100" value="55" id="apVolume" class="ap-volume" aria-label="Volume" />
-  <button class="ap-toggle" id="apToggle" type="button" aria-label="Cycle audio source" title="Cycle between video, song, and trailer">
-    <svg class="ic-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-    <svg class="ic-trailer1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="7" y1="4" x2="7" y2="9"/><line x1="12" y1="4" x2="12" y2="9"/><line x1="17" y1="4" x2="17" y2="9"/></svg>
-    <svg class="ic-trailer2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>
-  </button>
-  <span class="ap-label" id="apLabel">VIBES</span>
+  <div class="ap-track">
+    <button class="ap-nav" id="apPrev" type="button" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+    </button>
+    <span class="ap-label" id="apLabel">VIBES</span>
+    <button class="ap-nav" id="apNext" type="button" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+    </button>
+  </div>
 </div>
 <div class="bg-tint"></div>
 <div class="grain" aria-hidden="true"></div>

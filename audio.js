@@ -17,7 +17,8 @@ const BG_VIDEO = {
 const panel = document.getElementById("audioPanel");
 const muteBtn = document.getElementById("apMute");
 const volSlider = document.getElementById("apVolume");
-const toggleBtn = document.getElementById("apToggle");
+const prevBtn = document.getElementById("apPrev");
+const nextBtn = document.getElementById("apNext");
 const labelEl = document.getElementById("apLabel");
 
 let bgPlayer = null;
@@ -145,9 +146,12 @@ volSlider?.addEventListener("input", () => {
   if (volume === 0 && unmuted) { unmuted = false; applyAudioState(); }
 });
 
-toggleBtn?.addEventListener("click", () => {
+function advance(delta) {
   const i = SOURCES.indexOf(active);
-  active = SOURCES[(i + 1) % SOURCES.length];
+  active = SOURCES[((i + delta) % SOURCES.length + SOURCES.length) % SOURCES.length];
   localStorage.setItem(SRC_KEY, active);
   applyAudioState();
-});
+}
+
+prevBtn?.addEventListener("click", () => advance(-1));
+nextBtn?.addEventListener("click", () => advance(1));

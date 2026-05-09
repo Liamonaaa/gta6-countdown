@@ -146,49 +146,48 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
 }
 
-.ap-toggle {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px;
-  border: 1px solid rgba(255, 210, 123, 0.35);
-  border-radius: 50%;
+.ap-track {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 6px;
   background: rgba(0,0,0,0.4);
-  color: var(--cream);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 210, 123, 0.22);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+.ap-nav {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px;
+  border: none; border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 249, 203, 0.78);
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+  flex: 0 0 auto;
 }
-.ap-toggle:hover {
+.ap-nav:hover {
+  color: var(--cream);
+  background: rgba(223, 58, 147, 0.25);
   transform: scale(1.08);
-  border-color: var(--amber);
-  background: rgba(255, 210, 123, 0.18);
-  box-shadow: 0 0 16px rgba(255, 210, 123, 0.45);
 }
-.ap-toggle svg { width: 16px; height: 16px; }
-.ap-toggle .ic-trailer1,
-.ap-toggle .ic-trailer2 { display: none; }
-.audio-panel[data-src="trailer1"] .ap-toggle .ic-video,
-.audio-panel[data-src="trailer1"] .ap-toggle .ic-trailer2 { display: none; }
-.audio-panel[data-src="trailer1"] .ap-toggle .ic-trailer1 { display: block; }
-.audio-panel[data-src="trailer2"] .ap-toggle .ic-video,
-.audio-panel[data-src="trailer2"] .ap-toggle .ic-trailer1 { display: none; }
-.audio-panel[data-src="trailer2"] .ap-toggle .ic-trailer2 { display: block; }
-.audio-panel[data-src="trailer1"] .ap-toggle {
-  border-color: var(--neon);
-  background: rgba(255, 95, 162, 0.18);
-  box-shadow: 0 0 16px rgba(255, 95, 162, 0.45);
-}
-.audio-panel[data-src="trailer2"] .ap-toggle {
-  border-color: var(--purple);
-  background: rgba(92, 22, 99, 0.35);
-  box-shadow: 0 0 16px rgba(92, 22, 99, 0.6);
-}
+.ap-nav svg { width: 14px; height: 14px; }
 
 .ap-label {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 12px;
   letter-spacing: 0.28em;
   color: var(--cream);
-  min-width: 64px;
+  min-width: 86px;
   text-align: center;
+  white-space: nowrap;
+}
+
+.audio-panel[data-src="trailer1"] .ap-track {
+  border-color: rgba(255, 95, 162, 0.55);
+  box-shadow: 0 0 16px rgba(255, 95, 162, 0.35);
+}
+.audio-panel[data-src="trailer2"] .ap-track {
+  border-color: rgba(92, 22, 99, 0.7);
+  box-shadow: 0 0 16px rgba(92, 22, 99, 0.5);
 }
 
 @media (max-width: 640px) {
