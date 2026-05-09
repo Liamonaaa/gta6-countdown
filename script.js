@@ -199,12 +199,14 @@ if (ltSection) {
     const progress = scrolled / total; // 0..1 across whole section
     const slot = 1 / (N - 1); // distance between panel anchors
 
+    const DWELL = 0.55; // fraction of slot held flat at center before crossfade
     ltPanels.forEach((p, i) => {
       const center = i * slot;
       const dist = (progress - center) / slot; // -1 entering, 0 center, +1 leaving
       const adist = Math.abs(dist);
-      const op = clamp(1 - adist, 0, 1);
-      const local = clamp(1 - adist * 1.4, 0, 1);
+      const fadeT = clamp((adist - DWELL) / (1 - DWELL), 0, 1); // 0 inside dwell, 1 fully gone
+      const op = 1 - fadeT;
+      const local = 1 - clamp(fadeT * 1.3, 0, 1);
       const frac = clamp((dist + 1) / 2, 0, 1);
       p.style.setProperty('--op', op.toFixed(3));
       p.style.setProperty('--local', local.toFixed(3));

@@ -982,7 +982,7 @@ html[dir="rtl"] .mini-bar {
 /* ===== LEONIDA TOUR (sticky cinematic scroll) ===== */
 .leonida-tour {
   position: relative;
-  height: 600vh;
+  height: 1100vh;
   background: #000;
   z-index: 4;
 }
@@ -1120,7 +1120,7 @@ html[dir="rtl"] .lt-caption {
   text-align: right;
 }
 @media (max-width: 720px) {
-  .leonida-tour { height: 500vh; }
+  .leonida-tour { height: 850vh; }
   .lt-caption { bottom: 10vh; left: 5vw; right: 5vw; }
   .lt-progress { right: 2vw; gap: 10px; }
   .lt-dot { width: 8px; height: 8px; }
