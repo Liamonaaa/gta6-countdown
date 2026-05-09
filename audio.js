@@ -20,6 +20,7 @@ const volSlider = document.getElementById("apVolume");
 const prevBtn = document.getElementById("apPrev");
 const nextBtn = document.getElementById("apNext");
 const labelEl = document.getElementById("apLabel");
+const bgWrap = document.getElementById("bgVideoWrap");
 
 let bgPlayer = null;
 let songPlayer = null;
@@ -65,6 +66,15 @@ function initPlayers() {
           applyAudioState();
         },
         onStateChange: e => {
+          if (e.data === YT.PlayerState.PLAYING) {
+            bgWrap?.classList.add("playing");
+          } else if (
+            e.data === YT.PlayerState.BUFFERING ||
+            e.data === YT.PlayerState.CUED ||
+            e.data === YT.PlayerState.UNSTARTED
+          ) {
+            bgWrap?.classList.remove("playing");
+          }
           if (e.data === YT.PlayerState.ENDED) {
             try { bgPlayer.playVideo(); } catch {}
           }
@@ -100,6 +110,7 @@ function syncBgVideo(force) {
   if (!force && desired === currentBgId) return;
   currentBgId = desired;
   if (!bgPlayer || !bgReady) return;
+  bgWrap?.classList.remove("playing");
   try {
     bgPlayer.loadVideoById(desired);
   } catch {}
@@ -150,6 +161,9 @@ function advance(delta) {
   const i = SOURCES.indexOf(active);
   active = SOURCES[((i + delta) % SOURCES.length + SOURCES.length) % SOURCES.length];
   localStorage.setItem(SRC_KEY, active);
+  if (active === "trailer2" && songPlayer && songReady) {
+    try { songPlayer.seekTo(0, true); } catch {}
+  }
   applyAudioState();
 }
 
