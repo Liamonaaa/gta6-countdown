@@ -36,13 +36,29 @@
   </iframe>
 </div>
 
+<!-- Hidden song player -->
+<div class="audio-hidden" aria-hidden="true">
+  <iframe
+    id="songPlayer"
+    src="https://www.youtube.com/embed/hH2gvfKZbL0?autoplay=1&mute=1&controls=0&loop=1&playlist=hH2gvfKZbL0&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&enablejsapi=1"
+    title="GTA VI theme"
+    allow="autoplay; encrypted-media"
+    frameborder="0"
+    referrerpolicy="strict-origin-when-cross-origin">
+  </iframe>
+</div>
+
 <!-- Audio control panel -->
-<div class="audio-panel" id="audioPanel" data-muted="true">
+<div class="audio-panel" id="audioPanel" data-muted="true" data-src="video">
   <button class="ap-mute" id="apMute" type="button" aria-label="Toggle sound">
     <svg class="ic-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
     <svg class="ic-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
   </button>
   <input type="range" min="0" max="100" value="55" id="apVolume" class="ap-volume" aria-label="Volume" />
+  <button class="ap-toggle" id="apToggle" type="button" aria-label="Toggle audio source" title="Switch between video and song">
+    <svg class="ic-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+    <svg class="ic-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  </button>
 </div>
 <div class="bg-tint"></div>
 <div class="grain" aria-hidden="true"></div>
