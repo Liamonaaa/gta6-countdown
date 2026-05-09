@@ -6,6 +6,9 @@ const SRC_KEY = "gta6-src";
 const SOURCES = ["video", "song", "trailer"];
 const PLAYER_IDS = { video: "bgPlayer", song: "songPlayer", trailer: "trailerPlayer" };
 const LABELS = { video: "VIBES", song: "THEME", trailer: "TRAILER 1" };
+const DEFAULT_BG_ID = "06YQ1cHfIKQ";
+const BG_FOR_SOURCE = { video: DEFAULT_BG_ID, song: "VQRLujxTm3c", trailer: DEFAULT_BG_ID };
+let currentBgId = DEFAULT_BG_ID;
 
 const panel = document.getElementById("audioPanel");
 const muteBtn = document.getElementById("apMute");
@@ -78,6 +81,20 @@ function applyAudioState() {
     panel.dataset.src = active;
   }
   if (labelEl) labelEl.textContent = LABELS[active];
+  syncBgVideo();
+}
+
+function syncBgVideo() {
+  const desired = BG_FOR_SOURCE[active] || DEFAULT_BG_ID;
+  if (desired === currentBgId) return;
+  const p = players.video;
+  if (!p || !ready.video) { currentBgId = desired; return; }
+  try {
+    p.loadVideoById(desired);
+    currentBgId = desired;
+    if (active === "video" && unmuted) p.unMute();
+    else p.mute();
+  } catch {}
 }
 
 muteBtn?.addEventListener("click", () => {
